@@ -34,7 +34,8 @@
 (defn local-push-android [{:keys [title message icon user-info]}]
   (pn-android/present-local-notification (merge {:channelId "status-im-notifications"
                                                  :title     title
-                                                 :message   message}
+                                                 :message   message
+                                                 :showBadge false}
                                                 (when user-info
                                                   {:userInfo (bean/->js user-info)})
                                                 (when icon

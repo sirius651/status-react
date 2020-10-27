@@ -429,7 +429,7 @@ public class PushNotificationHelper {
         }
     }
 
-   private boolean checkOrCreateChannel(NotificationManager manager, String channel_id, String channel_name, String channel_description, Uri soundUri, int importance, long[] vibratePattern) {
+    private boolean checkOrCreateChannel(NotificationManager manager, String channel_id, String channel_name, String channel_description, Uri soundUri, int importance, long[] vibratePattern, boolean showBadge) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
             return false;
         if (manager == null)
@@ -453,6 +453,7 @@ public class PushNotificationHelper {
             channel.enableLights(true);
             channel.enableVibration(vibratePattern != null);
             channel.setVibrationPattern(vibratePattern);
+            channel.setShowBadge(showBadge);
 
             if (soundUri != null) {
                 AudioAttributes audioAttributes = new AudioAttributes.Builder()
@@ -484,12 +485,13 @@ public class PushNotificationHelper {
         int importance = channelInfo.hasKey("importance") ? channelInfo.getInt("importance") : 4;
         boolean vibrate = channelInfo.hasKey("vibrate") && channelInfo.getBoolean("vibrate");
         long[] vibratePattern = vibrate ? new long[] { DEFAULT_VIBRATION } : null;
+        boolean showBadge = channelInfo.hasKey("showBadge") && channelInfo.getBoolean("showBadge");
 
         NotificationManager manager = notificationManager();
 
         Uri soundUri = getSoundUri(soundName);
 
-        return checkOrCreateChannel(manager, channelId, channelName, channelDescription, soundUri, importance, vibratePattern);
+        return checkOrCreateChannel(manager, channelId, channelName, channelDescription, soundUri, importance, vibratePattern, showBadge);
     }
 
     public String getNotificationDefaultChannelId() {
