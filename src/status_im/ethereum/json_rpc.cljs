@@ -114,6 +114,8 @@
    "wakuext_joinCommunity" {}
    "wakuext_leaveCommunity" {}
    "wakuext_communities" {}
+   "wakuext_importCommunity" {}
+   "wakuext_exportCommunity" {}
    "status_chats" {}
    "wallet_getTransfers" {}
    "wallet_getTokensBalances" {}
