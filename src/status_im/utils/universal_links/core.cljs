@@ -98,7 +98,7 @@
                                  :tabs
                                  {:screen :wallet-stack
                                   :params {:screen :wallet-account
-                                           :params {:address account}}})))
+                                           :params account}})))
 
 (defn handle-not-found [full-url]
   (log/info "universal-links: no handler for " full-url))
