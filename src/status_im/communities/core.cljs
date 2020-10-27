@@ -141,16 +141,18 @@
 
 (defn create [community-name
               community-description
+              community-membership
               on-success-event
               on-failure-event]
-  {::json-rpc/call [{:method "wakuext_createCommunity"
-                     :params [{:identity {:display_name community-name
-                                          :description community-description}
-                               :permissions {:access access-no-membership}}]
-                     :on-success #(re-frame/dispatch [on-success-event %])
-                     :on-error #(do
-                                  (log/error "failed to create community" %)
-                                  (re-frame/dispatch [on-failure-event %]))}]})
+  (let [membership (js/parseInt community-membership)]
+    {::json-rpc/call [{:method "wakuext_createCommunity"
+                       :params [{:identity {:display_name community-name
+                                            :description community-description}
+                                 :permissions {:access membership}}]
+                       :on-success #(re-frame/dispatch [on-success-event %])
+                       :on-error #(do
+                                    (log/error "failed to create community" %)
+                                    (re-frame/dispatch [on-failure-event %]))}]}))
 
 (defn create-channel [community-id
                       community-channel-name
