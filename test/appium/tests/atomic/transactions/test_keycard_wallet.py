@@ -118,10 +118,11 @@ class TestTransactionWalletSingleDevice(SingleDeviceTestCase):
         wallet_view.add_account(account_name, keycard=True)
 
         wallet_view.just_fyi("Send transaction to new account")
+
         wallet_view.accounts_status_account.click()
+        transaction_amount = 0.05
         send_transaction = wallet_view.send_transaction_button.click()
         send_transaction.amount_edit_box.click()
-        transaction_amount = send_transaction.get_unique_amount()
         send_transaction.amount_edit_box.set_value(transaction_amount)
         send_transaction.confirm()
         send_transaction.chose_recipient_button.click()
@@ -130,7 +131,6 @@ class TestTransactionWalletSingleDevice(SingleDeviceTestCase):
         send_transaction.sign_transaction_button.click()
         send_transaction.sign_transaction(keycard=True)
         self.network_api.wait_for_confirmation_of_transaction(status_account_address, transaction_amount)
-        self.network_api.verify_balance_is_updated('0', status_account_address)
 
         wallet_view.just_fyi("Verifying previously sent transaction in new account")
         wallet_view.back_button.click()
@@ -145,10 +145,11 @@ class TestTransactionWalletSingleDevice(SingleDeviceTestCase):
 
         wallet_view.just_fyi("Sending eth from new account to main account")
         updated_balance = self.network_api.get_balance(status_account_address)
+        transaction_amount_1 = round(float(transaction_amount) * 0.1, 11)
         wallet_view.wait_balance_is_changed()
         wallet_view.send_transaction_button.click()
         send_transaction.amount_edit_box.click()
-        transaction_amount_1 = round(float(transaction_amount) * 0.05, 11)
+
         send_transaction.amount_edit_box.set_value(str(transaction_amount_1))
         send_transaction.confirm()
         send_transaction.chose_recipient_button.click()
